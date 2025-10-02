@@ -34,4 +34,16 @@ class ElasticsearchClient
 
         return $response;
     }
+	
+    public function searchDocumentsInIndex(array $params): array
+    {
+        try {
+            $response = $this->elasticClient->search($params);
+        } catch (Throwable $e) {
+            $this->logException($e);
+            return [];
+        }
+
+        return $response;
+    }
 }
