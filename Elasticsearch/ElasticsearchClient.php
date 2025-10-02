@@ -15,6 +15,29 @@ class ElasticsearchClient
             ->setApiKey($elasticCloudWebUiApiId, $elasticCloudWebUiApiKey)
             ->build();
     }
+	
+    public function getIndexDocumentsCount(string $index, int $precisionThreshold = 1000000): int
+    {
+        $params = [
+            'index' => $index,
+            'body' => [
+                "size" => 0,
+                "_source" => false,
+                "track_total_hits" => true,
+                //'query' => $query,
+                'aggs' => [
+                    "type_count" => [
+                        "cardinality" => [
+                            "field" => "id",
+                            "precision_threshold" => $precisionThreshold
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        return (int)$this->searchDocumentsInIndex($params)['hits']['total']['value'];
+    }
 
     public function searchDocumentsInIndexWithSql(string $sql): array
     {
