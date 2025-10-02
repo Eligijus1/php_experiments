@@ -58,6 +58,25 @@ class ElasticsearchClient
         return $response;
     }
 	
+    public function createOrUpdateDocumentInIndex(string $index, string $id, array $body): bool
+    {
+        $params = [
+            'index' => $index,
+            'id' => $id,
+            'body' => $body
+        ];
+
+        try {
+            //$response = $this->elasticClient->index($params);
+            $this->elasticClient->index($params);
+        } catch (Throwable $e) {
+            $this->logException($e);
+            return false;
+        }
+
+        return true;
+    }
+	
     public function searchDocumentsInIndex(array $params): array
     {
         try {
