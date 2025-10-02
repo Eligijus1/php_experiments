@@ -106,4 +106,18 @@ class ElasticsearchClient
         echo("Exception: {$e->getMessage()}");
         echo("Trace: {$e->getTraceAsString()}");
     }
+	
+    public function removeIndexAlias(string $alias): ?array
+    {
+        try {
+            return $this->getClient()->indices()->deleteAlias([
+                'index' => "*",
+                'alias' => $alias,
+            ]);
+        } catch (Throwable $e) {
+            $this->logException($e);
+
+            return null;
+        }
+    }
 }
