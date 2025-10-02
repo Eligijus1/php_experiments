@@ -77,6 +77,18 @@ class ElasticsearchClient
         return true;
     }
 	
+    public function updateIndexAlias(string $index, string $alias): ?array
+    {
+        try {
+            $this->removeIndexAlias($alias);
+            return $this->addIndexAlias($index, $alias);
+        } catch (Throwable $e) {
+            $this->logException($e);
+
+            return null;
+        }
+    }
+	
     public function searchDocumentsInIndex(array $params): array
     {
         try {
