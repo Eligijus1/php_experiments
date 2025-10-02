@@ -88,4 +88,10 @@ class ElasticsearchClient
 
         return $response;
     }
+	
+    private function logException(Throwable $e): void
+    {
+        echo("Exception: {$e->getMessage()}");
+        echo("Trace: {$e->getTraceAsString()}");
+    }
 }
